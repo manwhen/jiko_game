@@ -1,1 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JIKO 🎁</title>
 
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    overflow: hidden;
+    background: #10182f;
+    font-family: Arial, sans-serif;
+    color: white;
+    user-select: none;
+}
+
+#game {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background: linear-gradient(#76c7ff 0%, #dff5ff 65%, #7ed957 65%, #49a942 100%);
+}
+
+/* SKY */
+.cloud {
+    position: absolute;
+    background: white;
+    border-radius: 50px;
+    opacity: .8;
+}
+
+.cloud1 {
+    width: 140px;
+    height: 45px;
+    top: 12%;
+    left: 8%;
+}
+
+.cloud2 {
+    width: 180px;
+    height: 55px;
+    top: 22%;
+    right: 5%;
+}
+
+.cloud3 {
+    width: 110px;
+    height: 40px;
+    top: 7%;
+    right: 35%;
+}
+
+/* HUD */
+#hud {
+    position: absolute;
+    z-index: 20;
+    top: 12px;
+    left: 12px;
+    right: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 16px;
+    font-weight: bold;
+    text-shadow: 1px 2px 3px #333;
+}
+
+#musicBtn {
+    border: none;
+    border-radius: 20px;
+    padding: 8px 13px;
+    background: rgba(0,0,0,.45);
+    color: white;
+}
+
+/* PLAYER */
+#player {
+    position: absolute;
+    width: 48px;
+    height: 48px;
+    left: 90px;
+    bottom: 105px;
+    z-index: 10;
+    font-size: 40px;
+    line-height: 48px;
+    text-align: center;
+}
+
+/* GROUND */
+#ground {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 105px;
+    background:
+        repeating-linear-gradient(
+            45deg,
+            #4aa947,
+            #4aa947 12px,
+            #55b94e 12px,
+            #55b94e 24px
+        );
+    border-top: 5px solid #33852f;
+}
+
+/* PATH */
+#path {
+    position: absolute;
+    bottom: 105px;
+    left: 0;
+    width: 100%;
+    height: 45px;
+    background: #d4a76a;
+    border-top: 5px solid #b78348;
+    border-bottom: 5px solid #b78348;
+}
+
+/* PHOTO PORTALS */
+.photoPortal {
+    position: absolute;
+    bottom: 150px;
+    width: 95px;
+    height: 110px;
+    border: 5px solid white;
+    border-radius: 15px;
+    overflow: hidden;
+    background: #222;
+    box-shadow: 0 0 20px rgba(255,255,255,.8);
+    cursor: pointer;
+    z-index: 5;
+}
+
+.photoPortal img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.portalLabel {
+    position: absolute;
+    bottom: 3px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    background: rgba(0,0,0,.65);
+    font-size: 11px;
+    padding: 3px;
+}
+
+/* GIFT */
+#gift {
+    position: absolute;
+    right: 8%;
+    bottom: 150px;
+    width: 80px;
+    height: 80px;
+    z-index: 8;
+    font-size: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    filter: drop-shadow(0 5px 5px rgba(0,0,0,.4));
+}
+
+#giftText {
+    position: absolute;
+    bottom: 125px;
+    right: 5%;
+    font-size: 14px;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 1px 1px 3px #000;
+}
+
+/* CONTROLS */
+#controls {
+    position: absolute;
+    z-index: 30;
+    bottom: 15px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    gap: 18px;
+}
+
+.control {
+    width: 65px;
+    height: 55px;
+    border: none;
+    border-radius: 15px;
+    background: rgba(0,0,0,.5);
+    color: white;
+    font-size: 25px;
+    touch-action: manipulation;
+}
+
+/* START */
+#startScreen,
+#endScreen {
+    position: absolute;
+    z-index: 100;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: rgba(10,20,50,.88);
+    padding: 25px;
+}
+
+#startScreen h1,
+#endScreen h1 {
+    font-size: 42px;
+    margin-bottom: 15px;
+}
+
+#startScreen p,
+#endScreen p {
+    max-width: 400px;
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+.mainBtn {
+    padding: 14px 28px;
+    border: none;
+    border-radius: 30px;
+    background: #ffcf33;
+    color: #222;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* PHOTO MODAL */
+#photoModal {
+    position: absolute;
+    z-index: 200;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,.85);
+    padding: 20px;
+}
+
+#photoBox {
+    position: relative;
+    max-width: 90vw;
+    max-height: 85vh;
+}
+
+#photoBox img {
+    display: block;
+    max-width: 90vw;
+    max-height: 80vh;
+    border-radius: 15px;
+    border: 4px solid white;
+    object-fit: contain;
+}
+
+#closePhoto {
+    position: absolute;
+    right: -12px;
+    top: -12px;
+    width: 38px;
+    height: 38px;
+    border: none;
+    border-radius: 50%;
+    background: #ff4444;
+    color: white;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+/* MOBILE */
+@media(max-width:600px) {
+    #player {
+        left: 60px;
+    }
+
+    .photoPortal {
+        width: 75px;
+        height: 90px;
+    }
+
+    #gift {
+        right: 7%;
+        font-size: 60px;
+    }
+
+    #startScreen h1,
+    #endScreen h1 {
+        font-size: 34px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div id="game">
+
+    <div class="cloud cloud1"></div>
+    <div class="cloud cloud2"></div>
+    <div class="cloud cloud3"></div>
+
+    <div id="hud">
+        <div>❤️ <span id="lives">3</span></div>
+        <div>JIKO 💙</div>
+        <button id="musicBtn">🔊 Music</button>
+    </div>
+
+    <div id="path"></div>
+    <div id="ground"></div>
+
+    <div id="player">🏃</div>
+
+    <!-- PHOTO 1 -->
+    <div class="photoPortal" style="left:18%;" onclick="openPhoto(0)">
+        <img src="WhatsApp Image 2026-09-15 at 21.08.22 (1).jpeg">
+        <div class="portalLabel">Memory 1</div>
+    </div>
+
+    <!-- PHOTO 2 -->
+    <div class="photoPortal" style="left:38%;" onclick="openPhoto(1)">
+        <img src="WhatsApp Image 2026-09-15 at 21.08.22.jpeg">
+        <div class="portalLabel">Memory 2</div>
+    </div>
+
+    <!-- PHOTO 3 -->
+    <div class="photoPortal" style="left:58%;" onclick="openPhoto(2)">
+        <img src="WhatsApp Image 2026-09-15 at 21.08.23.jpeg">
+        <div class="portalLabel">Memory 3</div>
+    </div>
+
+    <!-- PHOTO 4 -->
+    <div class="photoPortal" style="left:73%;" onclick="openPhoto(3)">
+        <img src="WhatsApp Image 2026-09-15 at 21.11.27.jpeg">
+        <div class="portalLabel">Memory 4</div>
+    </div>
+
+    <!-- FINAL GIFT -->
+    <div id="gift">🎁</div>
+    <div id="giftText">Your surprise ❤️</div>
+
+    <!-- CONTROLS -->
+    <div id="controls">
+        <button class="control" id="leftBtn">⬅️</button>
+        <button class="control" id="jumpBtn">⬆️</button>
+        <button class="control" id="rightBtn">➡️</button>
+    </div>
+
+    <!-- START SCREEN -->
+    <div id="startScreen">
+        <h1>JIKO 🎁</h1>
+        <p>
+            A little journey made just for you ❤️<br>
+            Move forward, discover the memories,
+            and reach the final surprise!
+        </p>
+        <button class="mainBtn" onclick="startGame()">START ❤️</button>
+    </div>
+
+    <!-- END SCREEN -->
+    <div id="endScreen" style="display:none;">
+        <h1>🎉 You Found It! 🎁</h1>
+        <p>
+            You reached the end of the journey! ❤️<br>
+            Hope this little game made you smile.
+        </p>
+        <button class="mainBtn" onclick="location.reload()">PLAY AGAIN</button>
+    </div>
+
+    <!-- PHOTO MODAL -->
+    <div id="photoModal">
+        <div id="photoBox">
+            <button id="closePhoto" onclick="closePhoto()">×</button>
+            <img id="bigPhoto">
+        </div>
+    </div>
+
+</div>
+
+<script>
+
+const player = document.getElementById("player");
+const livesText = document.getElementById("lives");
+const gift = document.getElementById("gift");
+
+let x = 90;
+let y = 0;
+let velocityY = 0;
+
+let movingLeft = false;
+let movingRight = false;
+
+let playing = false;
+let finished = false;
+
+let lives = 3;
+
+const gravity = 0.7;
+const jumpPower = 13;
+const speed = 4;
+
+function startGame() {
+    document.getElementById("startScreen").style.display = "none";
+    playing = true;
+    requestAnimationFrame(gameLoop);
+}
+
+function gameLoop() {
+
+    if (!playing || finished) return;
+
+    if (movingLeft) x -= speed;
+    if (movingRight) x += speed;
+
+    velocityY -= gravity;
+    y += velocityY;
+
+    if (y < 0) {
+        y = 0;
+        velocityY = 0;
+    }
+
+    const maxX = window.innerWidth - 55;
+
+    if (x < 5) x = 5;
+    if (x > maxX) x = maxX;
+
+    player.style.left = x + "px";
+    player.style.bottom = (105 + y) + "px";
+
+    checkGift();
+
+    requestAnimationFrame(gameLoop);
+}
+
+function jump() {
+    if (!playing || finished) return;
+
+    if (y <= 1) {
+        velocityY = jumpPower;
+    }
+}
+
+function checkGift() {
+
+    const playerRect = player.getBoundingClientRect();
+    const giftRect = gift.getBoundingClientRect();
+
+    if (
+        playerRect.right > giftRect.left &&
+        playerRect.left < giftRect.right &&
+        playerRect.bottom > giftRect.top &&
+        playerRect.top < giftRect.bottom
+    ) {
+        finishGame();
+    }
+}
+
+function finishGame() {
+
+    finished = true;
+    playing = false;
+
+    document.getElementById("endScreen").style.display = "flex";
+}
+
+function openPhoto(index) {
+
+    const photos = [
+        "WhatsApp Image 2026-09-15 at 21.08.22 (1).jpeg",
+        "WhatsApp Image 2026-09-15 at 21.08.22.jpeg",
+        "WhatsApp Image 2026-09-15 at 21.08.23.jpeg",
+        "WhatsApp Image 2026-09-15 at 21.11.27.jpeg"
+    ];
+
+    document.getElementById("bigPhoto").src = photos[index];
+    document.getElementById("photoModal").style.display = "flex";
+}
+
+function closePhoto() {
+    document.getElementById("photoModal").style.display = "none";
+}
+
+/* KEYBOARD */
+
+document.addEventListener("keydown", function(e) {
+
+    if (e.key === "ArrowLeft") movingLeft = true;
+    if (e.key === "ArrowRight") movingRight = true;
+
+    if (e.key === "ArrowUp" || e.key === " ") jump();
+});
+
+document.addEventListener("keyup", function(e) {
+
+    if (e.key === "ArrowLeft") movingLeft = false;
+    if (e.key === "ArrowRight") movingRight = false;
+});
+
+/* TOUCH CONTROLS */
+
+function holdButton(button, startFunction, stopFunction) {
+
+    button.addEventListener("touchstart", function(e) {
+        e.preventDefault();
+        startFunction();
+    });
+
+    button.addEventListener("touchend", function(e) {
+        e.preventDefault();
+        stopFunction();
+    });
+
+    button.addEventListener("mousedown", function() {
+        startFunction();
+    });
+
+    button.addEventListener("mouseup", function() {
+        stopFunction();
+    });
+
+    button.addEventListener("mouseleave", function() {
+        stopFunction();
+    });
+}
+
+holdButton(
+    document.getElementById("leftBtn"),
+    () => movingLeft = true,
+    () => movingLeft = false
+);
+
+holdButton(
+    document.getElementById("rightBtn"),
+    () => movingRight = true,
+    () => movingRight = false
+);
+
+document.getElementById("jumpBtn").addEventListener("click", jump);
+
+/* MUSIC */
+
+let audioContext;
+let musicOn = false;
+
+document.getElementById("musicBtn").addEventListener("click", function() {
+
+    if (!audioContext) {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    }
+
+    if (musicOn) {
+        musicOn = false;
+        this.innerText = "🔇 Music";
+    } else {
+        musicOn = true;
+        this.innerText = "🔊 Music";
+        playTone();
+    }
+});
+
+function playTone() {
+
+    if (!musicOn) return;
+
+    const osc = audioContext.createOscillator();
+    const gain = audioContext.createGain();
+
+    osc.frequency.value = 440;
+    osc.type = "sine";
+
+    gain.gain.value = 0.035;
+
+    osc.connect(gain);
+    gain.connect(audioContext.destination);
+
+    osc.start();
+
+    setTimeout(() => {
+        osc.frequency.value = 523;
+    }, 250);
+
+    setTimeout(() => {
+        osc.stop();
+        if (musicOn) playTone();
+    }, 500);
+}
+
+</script>
+
+</body>
+</html>
