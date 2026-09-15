@@ -2,306 +2,527 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JIKO 🎁</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<title>JIKO — The Memory Run</title>
 
 <style>
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
 }
 
-body {
-    overflow: hidden;
-    background: #10182f;
-    font-family: Arial, sans-serif;
-    color: white;
-    user-select: none;
+html,body{
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    font-family:Arial,Helvetica,sans-serif;
+    background:#10152f;
 }
 
-#game {
-    position: relative;
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
-    background: linear-gradient(#76c7ff 0%, #dff5ff 65%, #7ed957 65%, #49a942 100%);
+body{
+    touch-action:none;
+}
+
+#game{
+    position:relative;
+    width:100vw;
+    height:100vh;
+    overflow:hidden;
+    background:linear-gradient(
+        to bottom,
+        #10183b 0%,
+        #263f78 42%,
+        #db876d 70%,
+        #f0bb76 100%
+    );
 }
 
 /* SKY */
-.cloud {
-    position: absolute;
-    background: white;
-    border-radius: 50px;
-    opacity: .8;
+
+#moon{
+    position:absolute;
+    width:75px;
+    height:75px;
+    right:12%;
+    top:8%;
+    border-radius:50%;
+    background:#fff3bd;
+    box-shadow:0 0 35px #fff3bd;
 }
 
-.cloud1 {
-    width: 140px;
-    height: 45px;
-    top: 12%;
-    left: 8%;
+.star{
+    position:absolute;
+    width:4px;
+    height:4px;
+    border-radius:50%;
+    background:white;
 }
 
-.cloud2 {
-    width: 180px;
-    height: 55px;
-    top: 22%;
-    right: 5%;
+.star:nth-child(1){left:7%;top:12%}
+.star:nth-child(2){left:18%;top:25%}
+.star:nth-child(3){left:29%;top:9%}
+.star:nth-child(4){left:42%;top:18%}
+.star:nth-child(5){left:53%;top:8%}
+.star:nth-child(6){left:67%;top:23%}
+.star:nth-child(7){left:80%;top:11%}
+.star:nth-child(8){left:91%;top:30%}
+
+/* HILLS */
+
+#hills{
+    position:absolute;
+    left:-10%;
+    bottom:145px;
+    width:120%;
+    height:190px;
+    background:#202e46;
+    clip-path:polygon(
+        0 100%,
+        0 72%,
+        10% 45%,
+        21% 70%,
+        33% 25%,
+        46% 67%,
+        59% 36%,
+        72% 72%,
+        85% 30%,
+        100% 63%,
+        100% 100%
+    );
 }
 
-.cloud3 {
-    width: 110px;
-    height: 40px;
-    top: 7%;
-    right: 35%;
-}
+/* WORLD */
 
-/* HUD */
-#hud {
-    position: absolute;
-    z-index: 20;
-    top: 12px;
-    left: 12px;
-    right: 12px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 16px;
-    font-weight: bold;
-    text-shadow: 1px 2px 3px #333;
-}
-
-#musicBtn {
-    border: none;
-    border-radius: 20px;
-    padding: 8px 13px;
-    background: rgba(0,0,0,.45);
-    color: white;
-}
-
-/* PLAYER */
-#player {
-    position: absolute;
-    width: 48px;
-    height: 48px;
-    left: 90px;
-    bottom: 105px;
-    z-index: 10;
-    font-size: 40px;
-    line-height: 48px;
-    text-align: center;
+#world{
+    position:absolute;
+    left:0;
+    top:0;
+    width:3600px;
+    height:100%;
 }
 
 /* GROUND */
-#ground {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: 105px;
+
+#ground{
+    position:absolute;
+    left:0;
+    bottom:0;
+    width:3600px;
+    height:145px;
     background:
         repeating-linear-gradient(
             45deg,
-            #4aa947,
-            #4aa947 12px,
-            #55b94e 12px,
-            #55b94e 24px
+            #304438 0px,
+            #304438 18px,
+            #374d3e 18px,
+            #374d3e 36px
         );
-    border-top: 5px solid #33852f;
 }
 
-/* PATH */
-#path {
-    position: absolute;
-    bottom: 105px;
-    left: 0;
-    width: 100%;
-    height: 45px;
-    background: #d4a76a;
-    border-top: 5px solid #b78348;
-    border-bottom: 5px solid #b78348;
+#road{
+    position:absolute;
+    left:0;
+    bottom:43px;
+    width:3600px;
+    height:70px;
+    background:#3d494c;
+    border-top:4px solid #687276;
+    border-bottom:4px solid #20292b;
 }
 
-/* PHOTO PORTALS */
-.photoPortal {
-    position: absolute;
-    bottom: 150px;
-    width: 95px;
-    height: 110px;
-    border: 5px solid white;
-    border-radius: 15px;
-    overflow: hidden;
-    background: #222;
-    box-shadow: 0 0 20px rgba(255,255,255,.8);
-    cursor: pointer;
-    z-index: 5;
+.roadLine{
+    position:absolute;
+    bottom:76px;
+    width:75px;
+    height:6px;
+    background:#dfcf8a;
 }
 
-.photoPortal img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+#line1{left:100px}
+#line2{left:350px}
+#line3{left:600px}
+#line4{left:850px}
+#line5{left:1100px}
+#line6{left:1350px}
+#line7{left:1600px}
+#line8{left:1850px}
+#line9{left:2100px}
+#line10{left:2350px}
+#line11{left:2600px}
+#line12{left:2850px}
+#line13{left:3100px}
+
+/* PLAYER */
+
+#player{
+    position:absolute;
+    z-index:30;
+    left:120px;
+    bottom:145px;
+    width:52px;
+    height:75px;
 }
 
-.portalLabel {
-    position: absolute;
-    bottom: 3px;
-    left: 0;
-    right: 0;
-    text-align: center;
-    background: rgba(0,0,0,.65);
-    font-size: 11px;
-    padding: 3px;
+.head{
+    position:absolute;
+    left:12px;
+    top:0;
+    width:28px;
+    height:28px;
+    border-radius:50%;
+    background:#ffd0aa;
+    border:2px solid #322420;
+}
+
+.body{
+    position:absolute;
+    left:11px;
+    top:25px;
+    width:30px;
+    height:31px;
+    border-radius:10px 10px 5px 5px;
+    background:#5274d6;
+}
+
+.leg{
+    position:absolute;
+    top:52px;
+    width:8px;
+    height:23px;
+    border-radius:6px;
+    background:#202945;
+}
+
+.leg1{left:12px}
+.leg2{left:31px}
+
+.running .leg1{
+    animation:run1 .18s infinite alternate;
+}
+
+.running .leg2{
+    animation:run2 .18s infinite alternate;
+}
+
+@keyframes run1{
+    from{transform:rotate(25deg)}
+    to{transform:rotate(-25deg)}
+}
+
+@keyframes run2{
+    from{transform:rotate(-25deg)}
+    to{transform:rotate(25deg)}
+}
+
+/* OBSTACLES */
+
+.obstacle{
+    position:absolute;
+    bottom:145px;
+    width:45px;
+    height:55px;
+    border-radius:8px 8px 3px 3px;
+    background:linear-gradient(
+        135deg,
+        #69717a,
+        #30373c
+    );
+    border:3px solid #202529;
+    box-shadow:0 6px 10px rgba(0,0,0,.4);
+}
+
+#ob1{left:480px}
+#ob2{left:1000px}
+#ob3{left:1500px}
+#ob4{left:2050px}
+#ob5{left:2750px}
+
+/* MEMORIES */
+
+.memory{
+    position:absolute;
+    z-index:15;
+    bottom:220px;
+    width:95px;
+    height:115px;
+    overflow:hidden;
+    border:4px solid white;
+    border-radius:14px;
+    background:#111;
+    box-shadow:
+        0 0 10px white,
+        0 8px 18px rgba(0,0,0,.5);
+    cursor:pointer;
+    animation:memoryGlow 1.2s infinite alternate;
+}
+
+.memory img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.memory::after{
+    content:"MEMORY";
+    position:absolute;
+    bottom:0;
+    left:0;
+    right:0;
+    text-align:center;
+    padding:5px;
+    color:white;
+    background:rgba(0,0,0,.7);
+    font-size:10px;
+    font-weight:bold;
+}
+
+@keyframes memoryGlow{
+    from{
+        box-shadow:
+            0 0 7px white,
+            0 8px 18px rgba(0,0,0,.4);
+    }
+
+    to{
+        box-shadow:
+            0 0 25px #ffd95a,
+            0 8px 18px rgba(0,0,0,.4);
+    }
+}
+
+#m1{left:700px}
+#m2{left:1250px}
+#m3{left:1900px}
+#m4{left:2450px}
+
+/* COLLECTIBLES */
+
+.collectible{
+    position:absolute;
+    bottom:220px;
+    width:35px;
+    height:35px;
+    font-size:30px;
+    text-align:center;
+    line-height:35px;
+    filter:drop-shadow(0 0 8px #ffd84a);
 }
 
 /* GIFT */
-#gift {
-    position: absolute;
-    right: 8%;
-    bottom: 150px;
-    width: 80px;
-    height: 80px;
-    z-index: 8;
-    font-size: 70px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    filter: drop-shadow(0 5px 5px rgba(0,0,0,.4));
+
+#gift{
+    position:absolute;
+    left:3150px;
+    bottom:145px;
+    width:100px;
+    height:100px;
+    font-size:75px;
+    text-align:center;
+    line-height:100px;
+    filter:drop-shadow(0 8px 8px rgba(0,0,0,.5));
+    animation:giftBounce 1s infinite alternate;
 }
 
-#giftText {
-    position: absolute;
-    bottom: 125px;
-    right: 5%;
-    font-size: 14px;
-    font-weight: bold;
-    color: #fff;
-    text-shadow: 1px 1px 3px #000;
+@keyframes giftBounce{
+    from{transform:translateY(0)}
+    to{transform:translateY(-9px)}
+}
+
+#giftLabel{
+    position:absolute;
+    left:3115px;
+    bottom:120px;
+    width:170px;
+    text-align:center;
+    color:white;
+    font-weight:bold;
+    text-shadow:0 2px 5px black;
+}
+
+/* HUD */
+
+#hud{
+    position:absolute;
+    z-index:100;
+    top:12px;
+    left:12px;
+    right:12px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.hudBox{
+    padding:9px 14px;
+    color:white;
+    font-weight:bold;
+    background:rgba(0,0,0,.4);
+    border-radius:22px;
+    backdrop-filter:blur(5px);
+    text-shadow:0 2px 4px black;
+}
+
+#musicButton{
+    border:0;
+    padding:9px 13px;
+    border-radius:22px;
+    color:white;
+    background:rgba(0,0,0,.4);
+    font-weight:bold;
 }
 
 /* CONTROLS */
-#controls {
-    position: absolute;
-    z-index: 30;
-    bottom: 15px;
-    left: 0;
-    right: 0;
-    display: flex;
-    justify-content: center;
-    gap: 18px;
+
+#controls{
+    position:absolute;
+    z-index:120;
+    left:0;
+    right:0;
+    bottom:12px;
+    display:flex;
+    justify-content:space-between;
+    padding:0 15px;
+    pointer-events:none;
 }
 
-.control {
-    width: 65px;
-    height: 55px;
-    border: none;
-    border-radius: 15px;
-    background: rgba(0,0,0,.5);
-    color: white;
-    font-size: 25px;
-    touch-action: manipulation;
+.controlGroup{
+    display:flex;
+    gap:10px;
+    pointer-events:auto;
 }
 
-/* START */
-#startScreen,
-#endScreen {
-    position: absolute;
-    z-index: 100;
-    inset: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    background: rgba(10,20,50,.88);
-    padding: 25px;
+.control{
+    width:62px;
+    height:55px;
+    border:0;
+    border-radius:15px;
+    background:rgba(0,0,0,.45);
+    color:white;
+    font-size:24px;
+    backdrop-filter:blur(5px);
 }
 
-#startScreen h1,
-#endScreen h1 {
-    font-size: 42px;
-    margin-bottom: 15px;
+/* OVERLAYS */
+
+.overlay{
+    position:absolute;
+    z-index:300;
+    inset:0;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    padding:25px;
+    color:white;
+    background:rgba(8,12,35,.9);
 }
 
-#startScreen p,
-#endScreen p {
-    max-width: 400px;
-    line-height: 1.5;
-    margin-bottom: 20px;
+.overlay h1{
+    font-size:46px;
+    margin-bottom:8px;
 }
 
-.mainBtn {
-    padding: 14px 28px;
-    border: none;
-    border-radius: 30px;
-    background: #ffcf33;
-    color: #222;
-    font-size: 18px;
-    font-weight: bold;
+.overlay h2{
+    font-size:25px;
+    margin-bottom:16px;
 }
 
-/* PHOTO MODAL */
-#photoModal {
-    position: absolute;
-    z-index: 200;
-    inset: 0;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    background: rgba(0,0,0,.85);
-    padding: 20px;
+.overlay p{
+    max-width:470px;
+    line-height:1.6;
+    margin-bottom:25px;
+    color:#eeeeff;
 }
 
-#photoBox {
-    position: relative;
-    max-width: 90vw;
-    max-height: 85vh;
+.mainButton{
+    padding:15px 32px;
+    border:0;
+    border-radius:30px;
+    background:#ffd34e;
+    color:#27202a;
+    font-size:18px;
+    font-weight:bold;
 }
 
-#photoBox img {
-    display: block;
-    max-width: 90vw;
-    max-height: 80vh;
-    border-radius: 15px;
-    border: 4px solid white;
-    object-fit: contain;
+.closeButton{
+    padding:12px 28px;
+    border:0;
+    border-radius:30px;
+    background:#ff5364;
+    color:white;
+    font-size:17px;
+    font-weight:bold;
 }
 
-#closePhoto {
-    position: absolute;
-    right: -12px;
-    top: -12px;
-    width: 38px;
-    height: 38px;
-    border: none;
-    border-radius: 50%;
-    background: #ff4444;
-    color: white;
-    font-size: 22px;
-    font-weight: bold;
+.hidden{
+    display:none !important;
+}
+
+/* PHOTO VIEWER */
+
+#photoViewer{
+    position:absolute;
+    z-index:500;
+    inset:0;
+    display:none;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+    background:rgba(0,0,0,.92);
+}
+
+#largePhoto{
+    max-width:92vw;
+    max-height:82vh;
+    object-fit:contain;
+    border:4px solid white;
+    border-radius:15px;
+}
+
+#closePhoto{
+    position:absolute;
+    top:18px;
+    right:18px;
+    width:45px;
+    height:45px;
+    border:0;
+    border-radius:50%;
+    background:#ff4757;
+    color:white;
+    font-size:30px;
 }
 
 /* MOBILE */
-@media(max-width:600px) {
-    #player {
-        left: 60px;
+
+@media(max-width:600px){
+
+    #moon{
+        width:55px;
+        height:55px;
     }
 
-    .photoPortal {
-        width: 75px;
-        height: 90px;
+    .memory{
+        width:75px;
+        height:95px;
     }
 
-    #gift {
-        right: 7%;
-        font-size: 60px;
+    #player{
+        transform:scale(.9);
+        transform-origin:bottom center;
     }
 
-    #startScreen h1,
-    #endScreen h1 {
-        font-size: 34px;
+    .overlay h1{
+        font-size:36px;
+    }
+
+    .overlay h2{
+        font-size:22px;
     }
 }
+
 </style>
 </head>
 
@@ -309,295 +530,1403 @@ body {
 
 <div id="game">
 
-    <div class="cloud cloud1"></div>
-    <div class="cloud cloud2"></div>
-    <div class="cloud cloud3"></div>
+    <div id="moon"></div>
+
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+
+    <div id="hills"></div>
+
+    <!-- HUD -->
 
     <div id="hud">
-        <div>❤️ <span id="lives">3</span></div>
-        <div>JIKO 💙</div>
-        <button id="musicBtn">🔊 Music</button>
+
+        <div class="hudBox">
+            ❤️ <span id="lives">3</span>
+        </div>
+
+        <div class="hudBox">
+            ⭐ <span id="score">0</span>
+        </div>
+
+        <button id="musicButton">
+            🔊 Music
+        </button>
+
     </div>
 
-    <div id="path"></div>
-    <div id="ground"></div>
+    <!-- WORLD -->
 
-    <div id="player">🏃</div>
+    <div id="world">
 
-    <!-- PHOTO 1 -->
-    <div class="photoPortal" style="left:18%;" onclick="openPhoto(0)">
-        <img src="WhatsApp Image 2026-09-15 at 21.08.22 (1).jpeg">
-        <div class="portalLabel">Memory 1</div>
+        <div id="ground"></div>
+
+        <div id="road"></div>
+
+        <div class="roadLine" id="line1"></div>
+        <div class="roadLine" id="line2"></div>
+        <div class="roadLine" id="line3"></div>
+        <div class="roadLine" id="line4"></div>
+        <div class="roadLine" id="line5"></div>
+        <div class="roadLine" id="line6"></div>
+        <div class="roadLine" id="line7"></div>
+        <div class="roadLine" id="line8"></div>
+        <div class="roadLine" id="line9"></div>
+        <div class="roadLine" id="line10"></div>
+        <div class="roadLine" id="line11"></div>
+        <div class="roadLine" id="line12"></div>
+        <div class="roadLine" id="line13"></div>
+
+        <!-- PLAYER -->
+
+        <div id="player">
+
+            <div class="head"></div>
+
+            <div class="body"></div>
+
+            <div class="leg leg1"></div>
+            <div class="leg leg2"></div>
+
+        </div>
+
+        <!-- OBSTACLES -->
+
+        <div class="obstacle" id="ob1"></div>
+        <div class="obstacle" id="ob2"></div>
+        <div class="obstacle" id="ob3"></div>
+        <div class="obstacle" id="ob4"></div>
+        <div class="obstacle" id="ob5"></div>
+
+        <!-- MEMORY 1 -->
+
+        <div
+            class="memory"
+            id="m1"
+            data-x="700"
+            data-photo="WhatsApp Image 2026-09-15 at 21.08.22 (1).jpeg">
+
+            <img
+                src="WhatsApp Image 2026-09-15 at 21.08.22 (1).jpeg"
+                alt="Memory 1">
+
+        </div>
+
+        <!-- MEMORY 2 -->
+
+        <div
+            class="memory"
+            id="m2"
+            data-x="1250"
+            data-photo="WhatsApp Image 2026-09-15 at 21.08.22.jpeg">
+
+            <img
+                src="WhatsApp Image 2026-09-15 at 21.08.22.jpeg"
+                alt="Memory 2">
+
+        </div>
+
+        <!-- MEMORY 3 -->
+
+        <div
+            class="memory"
+            id="m3"
+            data-x="1900"
+            data-photo="WhatsApp Image 2026-09-15 at 21.08.23.jpeg">
+
+            <img
+                src="WhatsApp Image 2026-09-15 at 21.08.23.jpeg"
+                alt="Memory 3">
+
+        </div>
+
+        <!-- MEMORY 4 -->
+
+        <div
+            class="memory"
+            id="m4"
+            data-x="2450"
+            data-photo="WhatsApp Image 2026-09-15 at 21.11.27.jpeg">
+
+            <img
+                src="WhatsApp Image 2026-09-15 at 21.11.27.jpeg"
+                alt="Memory 4">
+
+        </div>
+
+        <!-- STARS -->
+
+        <div
+            class="collectible"
+            data-x="850">
+            ⭐
+        </div>
+
+        <div
+            class="collectible"
+            data-x="1400">
+            ⭐
+        </div>
+
+        <div
+            class="collectible"
+            data-x="2150">
+            ⭐
+        </div>
+
+        <div
+            class="collectible"
+            data-x="2800">
+            ⭐
+        </div>
+
+        <!-- FINAL GIFT -->
+
+        <div id="gift">
+            🎁
+        </div>
+
+        <div id="giftLabel">
+            YOUR SURPRISE ❤️
+        </div>
+
     </div>
 
-    <!-- PHOTO 2 -->
-    <div class="photoPortal" style="left:38%;" onclick="openPhoto(1)">
-        <img src="WhatsApp Image 2026-09-15 at 21.08.22.jpeg">
-        <div class="portalLabel">Memory 2</div>
-    </div>
+    <!-- TOUCH CONTROLS -->
 
-    <!-- PHOTO 3 -->
-    <div class="photoPortal" style="left:58%;" onclick="openPhoto(2)">
-        <img src="WhatsApp Image 2026-09-15 at 21.08.23.jpeg">
-        <div class="portalLabel">Memory 3</div>
-    </div>
-
-    <!-- PHOTO 4 -->
-    <div class="photoPortal" style="left:73%;" onclick="openPhoto(3)">
-        <img src="WhatsApp Image 2026-09-15 at 21.11.27.jpeg">
-        <div class="portalLabel">Memory 4</div>
-    </div>
-
-    <!-- FINAL GIFT -->
-    <div id="gift">🎁</div>
-    <div id="giftText">Your surprise ❤️</div>
-
-    <!-- CONTROLS -->
     <div id="controls">
-        <button class="control" id="leftBtn">⬅️</button>
-        <button class="control" id="jumpBtn">⬆️</button>
-        <button class="control" id="rightBtn">➡️</button>
+
+        <div class="controlGroup">
+
+            <button
+                class="control"
+                id="leftButton">
+                ◀
+            </button>
+
+            <button
+                class="control"
+                id="rightButton">
+                ▶
+            </button>
+
+        </div>
+
+        <div class="controlGroup">
+
+            <button
+                class="control"
+                id="jumpButton">
+                ⬆
+            </button>
+
+        </div>
+
     </div>
 
     <!-- START SCREEN -->
-    <div id="startScreen">
-        <h1>JIKO 🎁</h1>
+
+    <div
+        id="startScreen"
+        class="overlay">
+
+        <h1>
+            JIKO 💙
+        </h1>
+
+        <h2>
+            The Memory Run
+        </h2>
+
         <p>
-            A little journey made just for you ❤️<br>
-            Move forward, discover the memories,
-            and reach the final surprise!
+            Run through the memories.<br>
+            Avoid the obstacles.<br>
+            Collect the stars.<br>
+            Discover all four memories.<br><br>
+            And reach the final surprise. 🎁
         </p>
-        <button class="mainBtn" onclick="startGame()">START ❤️</button>
+
+        <button
+            class="mainButton"
+            id="startButton">
+
+            START THE RUN
+
+        </button>
+
     </div>
 
     <!-- END SCREEN -->
-    <div id="endScreen" style="display:none;">
-        <h1>🎉 You Found It! 🎁</h1>
-        <p>
-            You reached the end of the journey! ❤️<br>
-            Hope this little game made you smile.
+
+    <div
+        id="endScreen"
+        class="overlay hidden">
+
+        <h1 id="endTitle">
+            🎉 Round Complete!
+        </h1>
+
+        <h2 id="endSubtitle">
+            You Found the Surprise 🎁
+        </h2>
+
+        <p id="endText">
+            You made it through the memory run. ❤️
         </p>
-        <button class="mainBtn" onclick="location.reload()">PLAY AGAIN</button>
+
+        <button
+            class="mainButton"
+            id="replayButton">
+
+            PLAY AGAIN
+
+        </button>
+
+        <br><br>
+
+        <button
+            class="closeButton"
+            id="closeGameButton">
+
+            CLOSE GAME
+
+        </button>
+
     </div>
 
-    <!-- PHOTO MODAL -->
-    <div id="photoModal">
-        <div id="photoBox">
-            <button id="closePhoto" onclick="closePhoto()">×</button>
-            <img id="bigPhoto">
-        </div>
+    <!-- PHOTO VIEWER -->
+
+    <div id="photoViewer">
+
+        <button id="closePhoto">
+            ×
+        </button>
+
+        <img
+            id="largePhoto"
+            src=""
+            alt="Memory">
+
     </div>
 
 </div>
 
 <script>
 
-const player = document.getElementById("player");
-const livesText = document.getElementById("lives");
-const gift = document.getElementById("gift");
+/* =====================================================
+   GAME VARIABLES
+===================================================== */
 
-let x = 90;
-let y = 0;
+const player =
+    document.getElementById("player");
+
+const world =
+    document.getElementById("world");
+
+const startScreen =
+    document.getElementById("startScreen");
+
+const endScreen =
+    document.getElementById("endScreen");
+
+const photoViewer =
+    document.getElementById("photoViewer");
+
+const largePhoto =
+    document.getElementById("largePhoto");
+
+const livesDisplay =
+    document.getElementById("lives");
+
+const scoreDisplay =
+    document.getElementById("score");
+
+const endTitle =
+    document.getElementById("endTitle");
+
+const endSubtitle =
+    document.getElementById("endSubtitle");
+
+const endText =
+    document.getElementById("endText");
+
+const memories =
+    document.querySelectorAll(".memory");
+
+const obstacles =
+    document.querySelectorAll(".obstacle");
+
+const collectibles =
+    document.querySelectorAll(".collectible");
+
+
+let playerX = 120;
+let playerY = 0;
+
 let velocityY = 0;
 
 let movingLeft = false;
 let movingRight = false;
 
-let playing = false;
-let finished = false;
+let jumping = false;
+
+let gameRunning = false;
+let gameFinished = false;
+
+let photoOpen = false;
 
 let lives = 3;
+let score = 0;
+
+let cameraX = 0;
 
 const gravity = 0.7;
 const jumpPower = 13;
-const speed = 4;
+const movementSpeed = 4.3;
 
-function startGame() {
-    document.getElementById("startScreen").style.display = "none";
-    playing = true;
+
+/* =====================================================
+   START GAME
+===================================================== */
+
+document
+.getElementById("startButton")
+.addEventListener("click", function(){
+
+    startScreen.classList.add("hidden");
+
+    gameRunning = true;
+    gameFinished = false;
+
+    startMusic();
+
     requestAnimationFrame(gameLoop);
-}
 
-function gameLoop() {
+});
 
-    if (!playing || finished) return;
 
-    if (movingLeft) x -= speed;
-    if (movingRight) x += speed;
+/* =====================================================
+   GAME LOOP
+===================================================== */
+
+function gameLoop(){
+
+    if(!gameRunning || gameFinished){
+        return;
+    }
+
+    if(photoOpen){
+        requestAnimationFrame(gameLoop);
+        return;
+    }
+
+    /* movement */
+
+    if(movingLeft){
+        playerX -= movementSpeed;
+    }
+
+    if(movingRight){
+        playerX += movementSpeed;
+    }
+
+    /*
+       Automatic forward movement.
+       Player keeps moving when no button
+       is being pressed.
+    */
+
+    if(!movingLeft && !movingRight){
+        playerX += 1.2;
+    }
+
+
+    /* gravity */
 
     velocityY -= gravity;
-    y += velocityY;
 
-    if (y < 0) {
-        y = 0;
+    playerY += velocityY;
+
+
+    if(playerY <= 0){
+
+        playerY = 0;
         velocityY = 0;
+        jumping = false;
+
     }
 
-    const maxX = window.innerWidth - 55;
 
-    if (x < 5) x = 5;
-    if (x > maxX) x = maxX;
+    /* boundaries */
 
-    player.style.left = x + "px";
-    player.style.bottom = (105 + y) + "px";
+    if(playerX < 20){
+        playerX = 20;
+    }
 
+    if(playerX > 3170){
+        playerX = 3170;
+    }
+
+
+    /* camera */
+
+    cameraX =
+        playerX -
+        window.innerWidth * 0.28;
+
+    if(cameraX < 0){
+        cameraX = 0;
+    }
+
+    if(cameraX > 2700){
+        cameraX = 2700;
+    }
+
+    world.style.transform =
+        "translateX(" + (-cameraX) + "px)";
+
+
+    /* player */
+
+    player.style.left =
+        playerX + "px";
+
+    player.style.bottom =
+        (145 + playerY) + "px";
+
+
+    /* running animation */
+
+    if(
+        movingLeft ||
+        movingRight ||
+        playerY === 0
+    ){
+        player.classList.add("running");
+    }
+
+
+    /* collisions */
+
+    checkObstacles();
+    checkMemories();
+    checkStars();
     checkGift();
 
+
     requestAnimationFrame(gameLoop);
+
 }
 
-function jump() {
-    if (!playing || finished) return;
 
-    if (y <= 1) {
+/* =====================================================
+   JUMP
+===================================================== */
+
+function jump(){
+
+    if(
+        !gameRunning ||
+        gameFinished ||
+        photoOpen
+    ){
+        return;
+    }
+
+    if(playerY <= 1){
+
         velocityY = jumpPower;
+        jumping = true;
+
     }
+
 }
 
-function checkGift() {
 
-    const playerRect = player.getBoundingClientRect();
-    const giftRect = gift.getBoundingClientRect();
+/* =====================================================
+   OBSTACLES
+===================================================== */
 
-    if (
-        playerRect.right > giftRect.left &&
-        playerRect.left < giftRect.right &&
-        playerRect.bottom > giftRect.top &&
-        playerRect.top < giftRect.bottom
-    ) {
+function checkObstacles(){
+
+    const playerLeft =
+        playerX + 8;
+
+    const playerRight =
+        playerX + 45;
+
+    obstacles.forEach(function(obstacle){
+
+        if(
+            obstacle.dataset.hit === "true"
+        ){
+            return;
+        }
+
+        const obstacleX =
+            parseFloat(
+                getComputedStyle(obstacle).left
+            );
+
+        const obstacleLeft =
+            obstacleX;
+
+        const obstacleRight =
+            obstacleX + 45;
+
+        /*
+           The player can jump over the obstacle.
+        */
+
+        if(
+            playerRight > obstacleLeft &&
+            playerLeft < obstacleRight &&
+            playerY < 45
+        ){
+
+            hitObstacle(obstacle);
+
+        }
+
+    });
+
+}
+
+
+function hitObstacle(obstacle){
+
+    obstacle.dataset.hit = "true";
+
+    lives--;
+
+    livesDisplay.textContent =
+        lives;
+
+    playerX -= 80;
+
+    if(playerX < 20){
+        playerX = 20;
+    }
+
+    player.style.opacity = "0.35";
+
+
+    setTimeout(function(){
+
+        player.style.opacity = "1";
+
+        obstacle.dataset.hit = "false";
+
+    },700);
+
+
+    if(lives <= 0){
+
+        gameOver();
+
+    }
+
+}
+
+
+function gameOver(){
+
+    gameRunning = false;
+    gameFinished = true;
+
+    endTitle.textContent =
+        "💔 Run Over";
+
+    endSubtitle.textContent =
+        "Try Again ❤️";
+
+    endText.innerHTML =
+        "You ran out of lives.<br>" +
+        "Final Score: " + score;
+
+    endScreen.classList.remove("hidden");
+
+}
+
+
+/* =====================================================
+   MEMORIES
+===================================================== */
+
+memories.forEach(function(memory){
+
+    memory.addEventListener(
+        "click",
+        function(){
+
+            openPhoto(
+                memory.dataset.photo
+            );
+
+        }
+    );
+
+});
+
+
+function checkMemories(){
+
+    memories.forEach(function(memory){
+
+        if(
+            memory.dataset.opened === "true"
+        ){
+            return;
+        }
+
+        const memoryX =
+            parseFloat(
+                memory.dataset.x
+            );
+
+        if(
+            playerX + 48 > memoryX &&
+            playerX < memoryX + 95
+        ){
+
+            memory.dataset.opened =
+                "true";
+
+            memory.style.opacity =
+                "0.45";
+
+            score += 25;
+
+            scoreDisplay.textContent =
+                score;
+
+            openPhoto(
+                memory.dataset.photo
+            );
+
+        }
+
+    });
+
+}
+
+
+/* =====================================================
+   STARS
+===================================================== */
+
+collectibles.forEach(function(item){
+
+    item.dataset.collected =
+        "false";
+
+});
+
+
+function checkStars(){
+
+    collectibles.forEach(function(item){
+
+        if(
+            item.dataset.collected === "true"
+        ){
+            return;
+        }
+
+        const starX =
+            parseFloat(
+                item.dataset.x
+            );
+
+        if(
+            playerX + 48 > starX &&
+            playerX < starX + 35
+        ){
+
+            item.dataset.collected =
+                "true";
+
+            item.style.display =
+                "none";
+
+            score += 10;
+
+            scoreDisplay.textContent =
+                score;
+
+        }
+
+    });
+
+}
+
+
+/* =====================================================
+   FINAL GIFT
+===================================================== */
+
+function checkGift(){
+
+    if(playerX >= 3090){
+
         finishGame();
+
     }
+
 }
 
-function finishGame() {
 
-    finished = true;
-    playing = false;
+function finishGame(){
 
-    document.getElementById("endScreen").style.display = "flex";
+    if(gameFinished){
+        return;
+    }
+
+    gameFinished = true;
+    gameRunning = false;
+
+    endTitle.textContent =
+        "🎉 Round Complete!";
+
+    endSubtitle.textContent =
+        "You Found the Surprise 🎁";
+
+    endText.innerHTML =
+        "You made it through the memory run. ❤️<br>" +
+        "Final Score: " + score;
+
+    endScreen.classList.remove("hidden");
+
 }
 
-function openPhoto(index) {
 
-    const photos = [
-        "WhatsApp Image 2026-09-15 at 21.08.22 (1).jpeg",
-        "WhatsApp Image 2026-09-15 at 21.08.22.jpeg",
-        "WhatsApp Image 2026-09-15 at 21.08.23.jpeg",
-        "WhatsApp Image 2026-09-15 at 21.11.27.jpeg"
+/* =====================================================
+   PHOTO VIEWER
+===================================================== */
+
+function openPhoto(filename){
+
+    photoOpen = true;
+
+    largePhoto.src =
+        filename;
+
+    photoViewer.style.display =
+        "flex";
+
+}
+
+
+function closePhoto(){
+
+    photoOpen = false;
+
+    photoViewer.style.display =
+        "none";
+
+}
+
+
+document
+.getElementById("closePhoto")
+.addEventListener(
+    "click",
+    closePhoto
+);
+
+
+/* click outside photo */
+
+photoViewer.addEventListener(
+    "click",
+    function(event){
+
+        if(
+            event.target === photoViewer
+        ){
+            closePhoto();
+        }
+
+    }
+);
+
+
+/* ESC closes photo */
+
+document.addEventListener(
+    "keydown",
+    function(event){
+
+        if(event.key === "Escape"){
+            closePhoto();
+        }
+
+    }
+);
+
+
+/* =====================================================
+   KEYBOARD CONTROLS
+===================================================== */
+
+document.addEventListener(
+    "keydown",
+    function(event){
+
+        if(event.key === "ArrowLeft"){
+            movingLeft = true;
+        }
+
+        if(event.key === "ArrowRight"){
+            movingRight = true;
+        }
+
+        if(
+            event.key === "ArrowUp" ||
+            event.key === " "
+        ){
+
+            event.preventDefault();
+
+            jump();
+
+        }
+
+    }
+);
+
+
+document.addEventListener(
+    "keyup",
+    function(event){
+
+        if(event.key === "ArrowLeft"){
+            movingLeft = false;
+        }
+
+        if(event.key === "ArrowRight"){
+            movingRight = false;
+        }
+
+    }
+);
+
+
+/* =====================================================
+   MOBILE CONTROLS
+===================================================== */
+
+function holdButton(
+    button,
+    startFunction,
+    stopFunction
+){
+
+    button.addEventListener(
+        "touchstart",
+        function(event){
+
+            event.preventDefault();
+
+            startFunction();
+
+        },
+        {passive:false}
+    );
+
+
+    button.addEventListener(
+        "touchend",
+        function(event){
+
+            event.preventDefault();
+
+            stopFunction();
+
+        },
+        {passive:false}
+    );
+
+
+    button.addEventListener(
+        "mousedown",
+        function(){
+
+            startFunction();
+
+        }
+    );
+
+
+    button.addEventListener(
+        "mouseup",
+        function(){
+
+            stopFunction();
+
+        }
+    );
+
+
+    button.addEventListener(
+        "mouseleave",
+        function(){
+
+            stopFunction();
+
+        }
+    );
+
+}
+
+
+holdButton(
+    document.getElementById("leftButton"),
+
+    function(){
+        movingLeft = true;
+    },
+
+    function(){
+        movingLeft = false;
+    }
+);
+
+
+holdButton(
+    document.getElementById("rightButton"),
+
+    function(){
+        movingRight = true;
+    },
+
+    function(){
+        movingRight = false;
+    }
+);
+
+
+document
+.getElementById("jumpButton")
+.addEventListener(
+    "touchstart",
+    function(event){
+
+        event.preventDefault();
+
+        jump();
+
+    },
+    {passive:false}
+);
+
+
+document
+.getElementById("jumpButton")
+.addEventListener(
+    "click",
+    jump
+);
+
+
+/* =====================================================
+   RESET / PLAY AGAIN
+===================================================== */
+
+document
+.getElementById("replayButton")
+.addEventListener(
+    "click",
+    function(){
+
+        resetGame();
+
+    }
+);
+
+
+function resetGame(){
+
+    /*
+       Reset all game variables
+    */
+
+    playerX = 120;
+    playerY = 0;
+
+    velocityY = 0;
+
+    movingLeft = false;
+    movingRight = false;
+
+    jumping = false;
+
+    gameRunning = true;
+    gameFinished = false;
+
+    photoOpen = false;
+
+    lives = 3;
+    score = 0;
+
+    cameraX = 0;
+
+
+    /*
+       Reset HUD
+    */
+
+    livesDisplay.textContent =
+        "3";
+
+    scoreDisplay.textContent =
+        "0";
+
+
+    /*
+       Reset player
+    */
+
+    player.style.left =
+        "120px";
+
+    player.style.bottom =
+        "145px";
+
+    player.style.opacity =
+        "1";
+
+
+    /*
+       Reset camera
+    */
+
+    world.style.transform =
+        "translateX(0px)";
+
+
+    /*
+       Reset memories
+    */
+
+    memories.forEach(function(memory){
+
+        memory.dataset.opened =
+            "false";
+
+        memory.style.opacity =
+            "1";
+
+    });
+
+
+    /*
+       Reset stars
+    */
+
+    collectibles.forEach(function(item){
+
+        item.dataset.collected =
+            "false";
+
+        item.style.display =
+            "block";
+
+    });
+
+
+    /*
+       Reset obstacles
+    */
+
+    obstacles.forEach(function(obstacle){
+
+        obstacle.dataset.hit =
+            "false";
+
+    });
+
+
+    /*
+       Reset photo viewer
+    */
+
+    photoOpen = false;
+
+    photoViewer.style.display =
+        "none";
+
+
+    /*
+       Reset end screen
+    */
+
+    endTitle.textContent =
+        "🎉 Round Complete!";
+
+    endSubtitle.textContent =
+        "You Found the Surprise 🎁";
+
+    endText.textContent =
+        "You made it through the memory run. ❤️";
+
+
+    endScreen.classList.add(
+        "hidden"
+    );
+
+
+    /*
+       Start fresh round
+    */
+
+    startMusic();
+
+    requestAnimationFrame(
+        gameLoop
+    );
+
+}
+
+
+/* =====================================================
+   CLOSE GAME
+===================================================== */
+
+document
+.getElementById("closeGameButton")
+.addEventListener(
+    "click",
+    function(){
+
+        gameRunning = false;
+        gameFinished = true;
+
+        clearTimeout(musicTimer);
+
+        document.body.innerHTML = `
+
+            <div style="
+                width:100vw;
+                height:100vh;
+                background:#10152f;
+                color:white;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                text-align:center;
+                font-family:Arial;
+                padding:25px;
+            ">
+
+                <div>
+
+                    <h1 style="
+                        font-size:42px;
+                        margin-bottom:15px;
+                    ">
+                        JIKO ❤️
+                    </h1>
+
+                    <p style="
+                        font-size:18px;
+                        line-height:1.6;
+                    ">
+                        Game closed.<br><br>
+                        You can close this browser tab now.
+                    </p>
+
+                </div>
+
+            </div>
+
+        `;
+
+    }
+);
+
+
+/* =====================================================
+   MUSIC
+===================================================== */
+
+let audioContext = null;
+let musicEnabled = true;
+let musicTimer = null;
+
+
+function startMusic(){
+
+    if(!audioContext){
+
+        audioContext =
+            new (
+                window.AudioContext ||
+                window.webkitAudioContext
+            )();
+
+    }
+
+    if(
+        audioContext.state ===
+        "suspended"
+    ){
+
+        audioContext.resume();
+
+    }
+
+    if(!musicEnabled){
+        return;
+    }
+
+    clearTimeout(musicTimer);
+
+    musicLoop();
+
+}
+
+
+function musicLoop(){
+
+    if(
+        !musicEnabled ||
+        !gameRunning
+    ){
+        return;
+    }
+
+
+    const notes = [
+
+        261.63,
+        329.63,
+        392.00,
+        329.63,
+        293.66,
+        349.23,
+        440.00,
+        392.00
+
     ];
 
-    document.getElementById("bigPhoto").src = photos[index];
-    document.getElementById("photoModal").style.display = "flex";
-}
 
-function closePhoto() {
-    document.getElementById("photoModal").style.display = "none";
-}
+    let index = 0;
 
-/* KEYBOARD */
 
-document.addEventListener("keydown", function(e) {
+    function playNote(){
 
-    if (e.key === "ArrowLeft") movingLeft = true;
-    if (e.key === "ArrowRight") movingRight = true;
+        if(
+            !musicEnabled ||
+            !gameRunning
+        ){
+            return;
+        }
 
-    if (e.key === "ArrowUp" || e.key === " ") jump();
-});
 
-document.addEventListener("keyup", function(e) {
+        const oscillator =
+            audioContext.createOscillator();
 
-    if (e.key === "ArrowLeft") movingLeft = false;
-    if (e.key === "ArrowRight") movingRight = false;
-});
+        const gain =
+            audioContext.createGain();
 
-/* TOUCH CONTROLS */
 
-function holdButton(button, startFunction, stopFunction) {
+        oscillator.type =
+            "triangle";
 
-    button.addEventListener("touchstart", function(e) {
-        e.preventDefault();
-        startFunction();
-    });
 
-    button.addEventListener("touchend", function(e) {
-        e.preventDefault();
-        stopFunction();
-    });
+        oscillator.frequency.value =
+            notes[
+                index % notes.length
+            ];
 
-    button.addEventListener("mousedown", function() {
-        startFunction();
-    });
 
-    button.addEventListener("mouseup", function() {
-        stopFunction();
-    });
+        gain.gain.setValueAtTime(
+            0.025,
+            audioContext.currentTime
+        );
 
-    button.addEventListener("mouseleave", function() {
-        stopFunction();
-    });
-}
 
-holdButton(
-    document.getElementById("leftBtn"),
-    () => movingLeft = true,
-    () => movingLeft = false
-);
+        gain.gain.exponentialRampToValueAtTime(
+            0.001,
+            audioContext.currentTime + 0.38
+        );
 
-holdButton(
-    document.getElementById("rightBtn"),
-    () => movingRight = true,
-    () => movingRight = false
-);
 
-document.getElementById("jumpBtn").addEventListener("click", jump);
+        oscillator.connect(gain);
 
-/* MUSIC */
+        gain.connect(
+            audioContext.destination
+        );
 
-let audioContext;
-let musicOn = false;
 
-document.getElementById("musicBtn").addEventListener("click", function() {
+        oscillator.start();
 
-    if (!audioContext) {
-        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        oscillator.stop(
+            audioContext.currentTime + 0.4
+        );
+
+
+        index++;
+
+
+        musicTimer =
+            setTimeout(
+                playNote,
+                430
+            );
+
     }
 
-    if (musicOn) {
-        musicOn = false;
-        this.innerText = "🔇 Music";
-    } else {
-        musicOn = true;
-        this.innerText = "🔊 Music";
-        playTone();
-    }
-});
 
-function playTone() {
+    playNote();
 
-    if (!musicOn) return;
-
-    const osc = audioContext.createOscillator();
-    const gain = audioContext.createGain();
-
-    osc.frequency.value = 440;
-    osc.type = "sine";
-
-    gain.gain.value = 0.035;
-
-    osc.connect(gain);
-    gain.connect(audioContext.destination);
-
-    osc.start();
-
-    setTimeout(() => {
-        osc.frequency.value = 523;
-    }, 250);
-
-    setTimeout(() => {
-        osc.stop();
-        if (musicOn) playTone();
-    }, 500);
 }
+
+
+/* =====================================================
+   MUSIC BUTTON
+===================================================== */
+
+document
+.getElementById("musicButton")
+.addEventListener(
+    "click",
+    function(){
+
+        musicEnabled =
+            !musicEnabled;
+
+
+        if(!musicEnabled){
+
+            this.textContent =
+                "🔇 Music";
+
+            clearTimeout(
+                musicTimer
+            );
+
+        }
+        else{
+
+            this.textContent =
+                "🔊 Music";
+
+            if(gameRunning){
+                startMusic();
+            }
+
+        }
+
+    }
+);
 
 </script>
 
